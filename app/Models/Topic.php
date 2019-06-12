@@ -37,6 +37,10 @@ namespace App\Models;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Topic whereUserId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Topic whereViewCount($value)
  * @mixin \Eloquent
+ * @property-read \App\Models\Category $category
+ * @property-read \App\Models\User $user
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Topic recentReplied()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Topic withOrder($order)
  */
 class Topic extends Model
 {
@@ -50,5 +54,46 @@ class Topic extends Model
     public function category()
     {
         return $this->belongsTo(Category::class);
+    }
+
+    /**
+     * @param $query
+     * @param $order string
+     * @return mixed
+     */
+    public function scopeWithOrder($query, $order)
+    {
+        switch ($order){
+            case 'recent':
+                $query->recent();
+                break;
+            default:
+                $query->recentReplied();
+                break;
+        }
+        //  预加载 处理N+1
+        return $query->with(['user','category']);
+    }
+
+    /**
+     * 最近时间发布排序
+     *
+     * @param $query
+     * @return mixed
+     */
+    public function scopeRecent($query)
+    {
+        return $query->orderBy('created_at', 'desc');
+    }
+
+    /**
+     * 最近回复排序
+     *
+     * @param $query
+     * @return mixed
+     */
+    public function scopeRecentReplied($query)
+    {
+        return $query->orderBy('updated_at', 'desc');
     }
 }
