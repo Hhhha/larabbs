@@ -6,6 +6,7 @@ use Illuminate\Auth\MustVerifyEmail as MustVerifyEmailTrait ;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Contracts\Auth\MustVerifyEmail as MustVerifyEmailContract;
+use Illuminate\Support\Str;
 use Spatie\Permission\Traits\HasRoles;
 
 /**
@@ -102,5 +103,21 @@ class User extends Authenticatable implements MustVerifyEmailContract
         $this->notification_count = 0;
         $this->save();
         $this->unreadNotifications->markAsRead();
+    }
+
+    public function setPasswordAttribute($value)
+    {
+        if (strlen($value) !== 60){
+            $value = bcrypt($value);
+        }
+        $this->attributes['password'] = $value;
+    }
+
+    public function setAvatarAttribute($value)
+    {
+        if ( ! Str::startsWith($value, 'http')){
+            $value = config('app.url') . $value;
+        }
+        $this->attributes['avatar'] = $value;
     }
 }
