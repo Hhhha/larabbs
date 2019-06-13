@@ -24,7 +24,7 @@ class TopicsController extends Controller
 
     public function show(Request $request,Topic $topic)
     {
-        if (empty($topic->slug) || $request->slug != $topic->slug){
+        if ( ! empty($topic->slug) && $request->slug != $topic->slug){
             return redirect($topic->link(),301);
         }
         return view('topics.show', compact('topic'));

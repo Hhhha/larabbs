@@ -35,7 +35,7 @@ Route::get('email/resend', 'Auth\VerificationController@resend')->name('verifica
 
 Route::resource('users','UsersController')->only(['show','edit','update']);
 Route::resource('topics', 'TopicsController', ['only' => ['index', 'create', 'store', 'update', 'edit', 'destroy']]);
-Route::get('topics/show/{topic}/{slug?}', 'TopicsController@show')->name('topics.show');
+Route::get('topics/{topic}/{slug?}', 'TopicsController@show')->name('topics.show');
 
 Route::resource('categories', 'CategoriesController', ['only' => ['show']]);
 //  文件上传
