@@ -28,7 +28,7 @@ class TopicObserver
 
     public function saved(Topic $topic)
     {
-        if (empty($topic->slug)){
+        if ( ! $topic->slug || $topic->isDirty('title')){
             //  推送到任务杜列
             dispatch(new TranslateSlug($topic));
         }
