@@ -41,6 +41,7 @@ namespace App\Models;
  * @property-read \App\Models\User $user
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Topic recentReplied()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Topic withOrder($order)
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Reply[] $replies
  */
 class Topic extends Model
 {
@@ -105,5 +106,14 @@ class Topic extends Model
     public function link($params = [])
     {
         return route('topics.show', array_merge([$this->id, $this->slug], $params));
+    }
+
+    /**
+     * 更新回复数
+     */
+    public function updateReplyCount()
+    {
+        $this->reply_count = $this->replies->count();
+        $this->save();
     }
 }

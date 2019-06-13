@@ -36,6 +36,9 @@ use Illuminate\Contracts\Auth\MustVerifyEmail as MustVerifyEmailContract;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereUpdatedAt($value)
  * @mixin \Eloquent
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Topic[] $topics
+ * @property int $notification_count 未读通知数量
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Reply[] $replies
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereNotificationCount($value)
  */
 class User extends Authenticatable implements MustVerifyEmailContract
 {
