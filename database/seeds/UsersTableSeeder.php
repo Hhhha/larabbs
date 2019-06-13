@@ -36,6 +36,11 @@ class UsersTableSeeder extends Seeder
         $user->name = 'Lee';
         $user->avatar = 'https://iocaffcdn.phphub.org/uploads/images/201710/14/1/ZqM7iaP4CR.png';
         $user->email = '377737058@qq.com';
+        //  用户1 指派为【站长】
+        $user->assignRole('Founder');
         $user->save();
+        // 将 2 号用户指派为『管理员』
+        $user = \App\Models\User::find(2);
+        $user->assignRole('Maintainer');
     }
 }
